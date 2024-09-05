@@ -322,11 +322,11 @@
             const message = document.getElementById('message').value;
 
             const orderDetails = {
-                cart: JSON.parse(localStorage.getItem('cartItems')),
-                name,
-                email,
-                phone,
-                message
+                Name: name,
+                    Email: email,
+                    Number: number,
+                    Message: message || 'No additional message provided',
+                    CartDetails: formatCartDetails()
             };
 
             emailjs.send('service_8xo6imq', 'template_m0ki2kb', orderDetails)
@@ -338,6 +338,13 @@
                     alert('Failed to place the order, please try again.');
                 });
         }
+        function formatCartDetails() {
+                let details = 'Cart Information:\n\n';
+                cartItems.forEach(item => {
+                    details += Item: ${item.dataName}\nPrice: ₹${item.price}\nQuantity: ${item.quantity || 1}\n\n;
+                });
+                return details;
+            }
     </script>
 </body>
 </html>
