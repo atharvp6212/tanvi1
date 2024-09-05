@@ -27,11 +27,11 @@
     <div id="cart-items"></div>
     <button class="order-button" onclick="placeOrder()">Place Order</button>
 
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<!--     <script src="https://cdn.emailjs.com/dist/email.min.js"></script> -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize EmailJS
-            emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
+            // emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
 
             // Retrieve cart items from localStorage
             const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
