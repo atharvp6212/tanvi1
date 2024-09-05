@@ -26,9 +26,27 @@
     <h1>Your Cart</h1>
     <div id="cart-items"></div>
     <button class="order-button" onclick="placeOrder()">Place Order</button>
-
+	<script>
+	function placeOrder() {
+		var params = {
+			Name : 'atharv',
+			Email : 'sdfghjk',
+			Number : 'sdfghjk',
+			Message : 'sdfghjk'
+	
+		};
+		emailjs.send('service_rbxw2mv', 'template_g8aex63', params).then(
+			(response) => {
+			  console.log('SUCCESS!', response.status, response.text);
+			},
+			(error) => {
+			  console.log('FAILED...', error);
+			},
+		  );
+	}
+</script>	
 <!--     <script src="https://cdn.emailjs.com/dist/email.min.js"></script> -->
-    <script>
+<!--     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize EmailJS
             // emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
@@ -140,6 +158,6 @@
                 return details;
             }
         });
-    </script>
+    </script> -->
 </body>
 </html>
