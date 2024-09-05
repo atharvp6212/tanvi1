@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your stylesheet -->
+    <style>
+        .cart-item { margin-bottom: 20px; }
+        .cart-item input { width: 50px; text-align: center; }
+        .cart-item button { margin: 0 5px; }
+        .order-button { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <div id="cart-items"></div>
+    <button class="order-button" onclick="placeOrder()">Place Order</button>
+
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize EmailJS
+            emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
+
+            // Retrieve cart items from localStorage
+            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            
+            // Get the cart items container
+            const cartItemsContainer = document.getElementById('cart-items');
+
+            // Check if there are any items in the cart
+            if (cartItems.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                return;
+            }
+
+            // Function to save cart items to localStorage
+            function saveCartItems() {
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            }
+
+            // Generate HTML for each cart item
+            cartItems.forEach((item, index) => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                
+                // Add HTML for each item
+                itemElement.innerHTML = `
+                    <p>Item: ${item.dataName}</p>
+                    <p>Price: ₹${item.price}</p>
+                    <label>Quantity:</label>
+                    <input type="number" min="1" value="${item.quantity || 1}" id="quantity-${index}">
+                    <button onclick="increaseQuantity(${index})">+</button>
+                    <button onclick="decreaseQuantity(${index})">-</button>
+                    <button onclick="removeItem(${index})">Remove</button>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+
+            // Function to increase quantity
+            window.increaseQuantity = function(index) {
+                cartItems[index].quantity = (cartItems[index].quantity || 1) + 1;
+                updateCart();
+            };
+
+            // Function to decrease quantity
+            window.decreaseQuantity = function(index) {
+                if ((cartItems[index].quantity || 1) > 1) {
+                    cartItems[index].quantity -= 1;
+                    updateCart();
+                }
+            };
+
+            // Function to remove item
+            window.removeItem = function(index) {
+                cartItems.splice(index, 1);
+                updateCart();
+            };
+
+            // Function to update the cart
+            function updateCart() {
+                saveCartItems();
+                cartItemsContainer.innerHTML = '';
+                cartItems.forEach((item, index) => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item';
+                    itemElement.innerHTML = `
+                        <p>Item: ${item.dataName}</p>
+                        <p>Price: ₹${item.price}</p>
+                        <label>Quantity:</label>
+                        <input type="number" min="1" value="${item.quantity || 1}" id="quantity-${index}">
+                        <button onclick="increaseQuantity(${index})">+</button>
+                        <button onclick="decreaseQuantity(${index})">-</button>
+                        <button onclick="removeItem(${index})">Remove</button>
+                    `;
+                    cartItemsContainer.appendChild(itemElement);
+                });
+            }
+
+            // Function to send cart information via email
+            window.placeOrder = function() {
+                const emailParams = {
+                    Name: prompt('Enter your name:'),
+                    Email: prompt('Enter your email address:'),
+                    Number: prompt('Enter your phone number (optional):'),
+                    Message: prompt('Additional message (optional):') || '',
+                    CartDetails: formatCartDetails()
+                };
+
+                emailjs.send('service_rbxw2mv', 'template_nbrzmzb', emailParams)
+                    .then((response) => {
+                        console.log('SUCCESS!', response.status, response.text);
+                        alert('Order placed and email sent successfully!');
+                        // Clear cart after sending email
+                        localStorage.removeItem('cartItems');
+                        document.getElementById('cart-items').innerHTML = '<p>Your cart is empty.</p>';
+                    }, (error) => {
+                        console.log('FAILED...', error);
+                        alert('Failed to send email.');
+                    });
+            };
+
+            // Function to format cart details
+            function formatCartDetails() {
+                let details = 'Cart Information:\n\n';
+                cartItems.forEach(item => {
+                    details += `Item: ${item.dataName}\nPrice: ₹${item.price}\nQuantity: ${item.quantity || 1}\n\n`;
+                });
+                return details;
+            }
+        });
+    </script>
+</body>
+</html>
