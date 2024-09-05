@@ -67,7 +67,7 @@
             cartItems.forEach((item, index) => {
                 const itemElement = document.createElement('div');
                 itemElement.className = 'cart-item';
-                itemElement.innerHTML = 
+                itemElement.innerHTML = `
                     <p>Item: ${item.dataName}</p>
                     <p>Price: ₹${item.price}</p>
                     <label>Quantity:</label>
@@ -75,7 +75,7 @@
                     <button onclick="increaseQuantity(${index})">+</button>
                     <button onclick="decreaseQuantity(${index})">-</button>
                     <button onclick="removeItem(${index})">Remove</button>
-                ;
+                `;
                 cartItemsContainer.appendChild(itemElement);
             });
 
@@ -102,7 +102,7 @@
                 cartItems.forEach((item, index) => {
                     const itemElement = document.createElement('div');
                     itemElement.className = 'cart-item';
-                    itemElement.innerHTML = 
+                    itemElement.innerHTML = `
                         <p>Item: ${item.dataName}</p>
                         <p>Price: ₹${item.price}</p>
                         <label>Quantity:</label>
@@ -110,7 +110,7 @@
                         <button onclick="increaseQuantity(${index})">+</button>
                         <button onclick="decreaseQuantity(${index})">-</button>
                         <button onclick="removeItem(${index})">Remove</button>
-                    ;
+                    `;
                     cartItemsContainer.appendChild(itemElement);
                 });
             }
@@ -149,7 +149,7 @@
             function formatCartDetails() {
                 let details = 'Cart Information:\n\n';
                 cartItems.forEach(item => {
-                    details += Item: ${item.dataName}\nPrice: ₹${item.price}\nQuantity: ${item.quantity || 1}\n\n;
+                    details += `Item: ${item.dataName}\nPrice: ₹${item.price}\nQuantity: ${item.quantity || 1}\n\n`;
                 });
                 return details;
             }
