@@ -347,11 +347,12 @@
 <section class="contact" id="contact">
 	<h1 class="heading"><span>contact</span> us </h1>
 	<div class="row">
-	   <form id="contact-form">
+	   <form id="contact-form" enctype="multipart/form-data">
 		  <input type="text" placeholder="Name" name="Name" id="Name" class="box">
 		  <input type="email" placeholder="Email" name="Email" id="Email" class="box">
 		  <input type="text" placeholder="Number" name="Number" id="Number" class="box">
 		  <textarea name="Message" class="box" placeholder="Message" id="Message" cols="" rows="10"></textarea>
+		  <input type="file" name="Image" id="Image" class="box">
 		  <button onclick="SendMail()" class="btn">Send Message</button>
 	   </form>
 	   <div class="image">
@@ -366,10 +367,14 @@
 			Name : document.getElementById("Name").value,
 			Email : document.getElementById("Email").value,
 			Number : document.getElementById("Number").value,
-			Message : document.getElementById("Message").value
-	
+			Message : document.getElementById("Message").value,
+			Image : document.getElementById("Image").files[0]
 		};
-		emailjs.send('service_rbxw2mv', 'template_g8aex63', params).then(
+		var formData = new FormData();
+		for (var key in params) {
+			formData.append(key, params[key]);
+		}
+		emailjs.sendForm('service_rbxw2mv', 'template_g8aex63', formData).then(
 			(response) => {
 			  console.log('SUCCESS!', response.status, response.text);
 			},
@@ -379,6 +384,7 @@
 		  );
 	}
 </script>
+
  
 <!--contact sections ends-->
 <!--footer sections starts-->
