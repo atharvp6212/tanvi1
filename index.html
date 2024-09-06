@@ -353,7 +353,7 @@
 		  <input type="text" placeholder="Number" name="Number" id="Number" class="box">
 		  <textarea name="Message" class="box" placeholder="Message" id="Message" cols="" rows="10"></textarea>
 		  <input type="file" name="Image" id="Image" class="box">
-		  <button onclick="SendMail()" class="btn">Send Message</button>
+		  <button type="button" onclick="SendMail()" class="btn">Send Message</button>
 	   </form>
 	   <div class="image">
 		  <img src="pin.jpg" alt="">
@@ -363,25 +363,15 @@
 
 <script>
 	function SendMail() {
-		var params = {
-			Name : document.getElementById("Name").value,
-			Email : document.getElementById("Email").value,
-			Number : document.getElementById("Number").value,
-			Message : document.getElementById("Message").value,
-			Image : document.getElementById("Image").files[0]
-		};
-		var formData = new FormData();
-		for (var key in params) {
-			formData.append(key, params[key]);
-		}
-		emailjs.sendForm('service_rbxw2mv', 'template_g8aex63', formData).then(
+		var form = document.getElementById('contact-form');
+		emailjs.sendForm('service_rbxw2mv', 'template_g8aex63', form).then(
 			(response) => {
 			  console.log('SUCCESS!', response.status, response.text);
 			},
 			(error) => {
 			  console.log('FAILED...', error);
-			},
-		  );
+			}
+		);
 	}
 </script>
 
